@@ -42,7 +42,10 @@ class Symptom(BaseEntity):
             f"symptom_{utils.hash_key(symptom_name)}")
 
         with open(filename, 'rb') as symptoms_resource:
-            return Symptom(**pickle.load(symptoms_resource))
+            return pickle.load(symptoms_resource)
+
+    def update(self, *args, **kwargs):
+        pass
 
 
 class Diagnosis(BaseEntity):
@@ -68,13 +71,13 @@ class Diagnosis(BaseEntity):
             f"diagnosis_{utils.hash_key(diagnosis_name)}_{utils.hash_key(symptom_name)}")
 
         with open(filename, 'rb') as diagnosis_resource:
-            return Diagnosis(**pickle.load(diagnosis_resource))
+            return pickle.load(diagnosis_resource)
 
     def update(self):
         filename = utils.get_resource_filename(
             f"diagnosis_{utils.hash_key(self.diagnosis_name)}_{utils.hash_key(self.corresponding_symptom)}")
         with open(filename, 'wb') as diagnosis_resource:
-            pickle.dump(self.__dict__, diagnosis_resource)
+            pickle.dump(self, diagnosis_resource)
 
     @staticmethod
     def get_all_by_symptom(symptom_name):

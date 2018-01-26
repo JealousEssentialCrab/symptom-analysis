@@ -1,11 +1,45 @@
 <html>
 <head>
     <script src="/static/gen/bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/symptoms.css">
 </head>
     <body>
-        <div data-ng-app="Symptoms">
+        <div class="container" data-ng-app="Symptoms">
             <div data-ng-controller="HomePageController as HomePageController">
-            <h1>{{ HomePageController.pageTitle }}</h1>
+                <h2>{{ HomePageController.pageTitle }}</h2>
+                <div >
+                <select class="select-style"
+                        id="symptomsSelector"
+                        data-ng-options="symptom as symptom.symptom_name for symptom in HomePageController.symptoms"
+                        data-ng-model="HomePageController.selectedSymptom">
+
+                </select>
+                <button class="button shadow" data-ng-click="HomePageController.getTopDiagnosis()">Suggest Diagnosis</button>
+                </div>
+
+                <div>
+                    <div class="field" data-ng-if="HomePageController.topDiagnosis && !HomePageController.diagnosisConfirmed">
+                        <div class="field"> Most likely diagnosis: <strong><i>{{HomePageController.topDiagnosis.diagnosis_name}}</i></strong>
+                            <button id="confirmDiagnosis" class="button shadow" data-ng-click="HomePageController.confirmDiagnosis()">Confirm</button>
+                            <button id="denyDiagnosis" class="button shadow" data-ng-click="HomePageController.denyDiagnosis()">Deny</button>
+                        </div>
+                        <div data-ng-if="HomePageController.diagnosisDenied">
+                            Please select a more likely diagnosis:
+                            <select class="select-style"
+                                    id="diagnosisSelector"
+                                    data-ng-options="diagnosis as diagnosis.diagnosis_name for diagnosis in HomePageController.fullDiagnosisList"
+                                    data-ng-model="HomePageController.selectedDiagnosis">
+                            </select>
+                            <button id="confirmNewDiagnosis" class="button shadow" data-ng-click="HomePageController.confirmNewDiagnosis()">Confirm</button>
+                        </div>
+                    </div>
+                    <div data-ng-if="HomePageController.diagnosisConfirmed">
+                        Thank you for your input.
+                        <br>
+                        If you would like to start again, press reset.
+                    </div>
+                    <div class="field"><button class="button shadow" data-ng-click="HomePageController.resetSelection()">Reset</button></div>
+                </div>
             </div>
         </div>
     </body>
