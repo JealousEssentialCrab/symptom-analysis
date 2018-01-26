@@ -16,7 +16,7 @@ export default function SymptomsFactory($http){
     }
 
     function getAllDiagnoses(symptom){
-        return $http.get('/diagnoses?symptom=' + symptom);
+        return $http.get('/diagnoses/?symptom=' + symptom);
     }
 
     return{

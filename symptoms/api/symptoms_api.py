@@ -38,3 +38,11 @@ def increment_weight():
     diagnosis_to_update.update()
     return Response(status=200)
 
+
+@diagnoses.route('/reset_weights', methods=['POST'])
+def reset_weights():
+    all_diagnoses = Diagnosis.get_all()
+    for diagnosis in all_diagnoses:
+        diagnosis.weight = 0
+        diagnosis.update()
+    return Response(200)
