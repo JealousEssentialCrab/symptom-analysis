@@ -1,0 +1,21 @@
+# virtualenvs
+.venv
+
+# node_modules
+node_modules/
+
+# python autogen
+*.egg-info
+__pycache__
+.cache
+
+# js gen
+symptoms/static/gen/*
+!symptoms/static/gen/.gitkeep
+
+# IDE
+.idea
+
+# local data
+symptoms/resources/*
+!symptoms/resources/.gitkeep%
