@@ -36,7 +36,5 @@ def extract_all_symptoms():
     return symptoms_cache, diagnoses_cache
 
 
-
-
-
-
+if __name__ == '__main__':
+    extract_all_symptoms()
