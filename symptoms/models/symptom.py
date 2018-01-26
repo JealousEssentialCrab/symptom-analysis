@@ -3,16 +3,21 @@ from abc import ABC, abstractmethod
 from symptoms import utils
 
 
-
 class BaseEntity(ABC):
 
+    @staticmethod
     @abstractmethod
-    def get_all(self):
+    def get_all():
         pass
 
-    @abstractmethod
     @staticmethod
-    def get_one(id):
+    @abstractmethod
+    def get_one(*args, **kwargs):
+        pass
+
+
+    @abstractmethod
+    def update(self, *args, **kwargs):
         pass
 
 
@@ -37,10 +42,10 @@ class Symptom(BaseEntity):
             f"symptom_{utils.hash_key(symptom_name)}")
 
         with open(filename, 'rb') as symptoms_resource:
-            return pickle.load(symptoms_resource)
+            return Symptom(**pickle.load(symptoms_resource))
 
 
-class Diagnosis(object):
+class Diagnosis(BaseEntity):
 
     def __init__(self, diagnosis_name: str = None,
                  corresponding_symptom: str = None, weight=0):
@@ -63,4 +68,20 @@ class Diagnosis(object):
             f"diagnosis_{utils.hash_key(diagnosis_name)}_{utils.hash_key(symptom_name)}")
 
         with open(filename, 'rb') as diagnosis_resource:
-            return pickle.load(diagnosis_resource)
+            return Diagnosis(**pickle.load(diagnosis_resource))
+
+    def update(self):
+        filename = utils.get_resource_filename(
+            f"diagnosis_{utils.hash_key(self.diagnosis_name)}_{utils.hash_key(self.corresponding_symptom)}")
+        with open(filename, 'wb') as diagnosis_resource:
+            pickle.dump(self.__dict__, diagnosis_resource)
+
+    @staticmethod
+    def get_all_by_symptom(symptom_name):
+        all_diagnoses = []
+
+        for filename in glob.glob(utils.get_resource_filename(
+                f"diagnosis_*_{utils.hash_key(symptom_name)}")):
+            with open(filename, 'rb') as diagnosis_resource:
+                all_diagnoses.append(pickle.load(diagnosis_resource))
+        return all_diagnoses
