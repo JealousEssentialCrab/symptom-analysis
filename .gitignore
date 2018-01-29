@@ -18,4 +18,4 @@ symptoms/static/gen/*
 
 # local data
 symptoms/resources/*
-!symptoms/resources/.gitkeep%
+!symptoms/resources/symptoms.csv
